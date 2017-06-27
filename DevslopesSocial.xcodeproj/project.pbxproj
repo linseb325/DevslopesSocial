@@ -19,6 +19,7 @@
 		C84181221F00572800ADF526 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84181211F00572800ADF526 /* RoundButton.swift */; };
 		C84181241F00587300ADF526 /* FancyTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84181231F00587300ADF526 /* FancyTextField.swift */; };
 		C84181261F0062D900ADF526 /* FancyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84181251F0062D800ADF526 /* FancyButton.swift */; };
+		C8B5CC841F029F240084554A /* FeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B5CC831F029F240084554A /* FeedVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		C84181211F00572800ADF526 /* RoundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		C84181231F00587300ADF526 /* FancyTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyTextField.swift; sourceTree = "<group>"; };
 		C84181251F0062D800ADF526 /* FancyButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyButton.swift; sourceTree = "<group>"; };
+		C8B5CC831F029F240084554A /* FeedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedVC.swift; sourceTree = "<group>"; };
 		EECF75217C4CE44AF54691CD /* Pods_DevslopesSocial.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DevslopesSocial.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -122,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				C84181071EFC577D00ADF526 /* LoginVC.swift */,
+				C8B5CC831F029F240084554A /* FeedVC.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 				C84181221F00572800ADF526 /* RoundButton.swift in Sources */,
 				C84181061EFC577D00ADF526 /* AppDelegate.swift in Sources */,
 				C84181261F0062D900ADF526 /* FancyButton.swift in Sources */,
+				C8B5CC841F029F240084554A /* FeedVC.swift in Sources */,
 				C84181241F00587300ADF526 /* FancyTextField.swift in Sources */,
 				C841811A1F00553200ADF526 /* FancyView.swift in Sources */,
 				C84181201F0055F900ADF526 /* Constants.swift in Sources */,
