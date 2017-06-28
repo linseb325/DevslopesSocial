@@ -20,6 +20,7 @@
 		C84181241F00587300ADF526 /* FancyTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84181231F00587300ADF526 /* FancyTextField.swift */; };
 		C84181261F0062D900ADF526 /* FancyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84181251F0062D800ADF526 /* FancyButton.swift */; };
 		C8B5CC841F029F240084554A /* FeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B5CC831F029F240084554A /* FeedVC.swift */; };
+		C8B5CC861F0426930084554A /* RoundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B5CC851F0426930084554A /* RoundImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		C84181231F00587300ADF526 /* FancyTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyTextField.swift; sourceTree = "<group>"; };
 		C84181251F0062D800ADF526 /* FancyButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyButton.swift; sourceTree = "<group>"; };
 		C8B5CC831F029F240084554A /* FeedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedVC.swift; sourceTree = "<group>"; };
+		C8B5CC851F0426930084554A /* RoundImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundImageView.swift; sourceTree = "<group>"; };
 		EECF75217C4CE44AF54691CD /* Pods_DevslopesSocial.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DevslopesSocial.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -109,6 +111,7 @@
 				C84181231F00587300ADF526 /* FancyTextField.swift */,
 				C84181211F00572800ADF526 /* RoundButton.swift */,
 				C84181251F0062D800ADF526 /* FancyButton.swift */,
+				C8B5CC851F0426930084554A /* RoundImageView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C84181081EFC577D00ADF526 /* LoginVC.swift in Sources */,
+				C8B5CC861F0426930084554A /* RoundImageView.swift in Sources */,
 				C84181221F00572800ADF526 /* RoundButton.swift in Sources */,
 				C84181061EFC577D00ADF526 /* AppDelegate.swift in Sources */,
 				C84181261F0062D900ADF526 /* FancyButton.swift in Sources */,
