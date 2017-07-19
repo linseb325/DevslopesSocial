@@ -14,12 +14,27 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
+    var posts = [Post]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        // Do any additional setup after loading the view.
+        
+        DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
+            if let snaps = snapshot.children.allObjects as? [DataSnapshot] {
+                self.posts.removeAll()
+                for snap in snaps {
+                    print("Brennan - SNAPSHOT: \(snap)")
+                    if let postDict = snap.value as? Dictionary<String, Any> {
+                        let post = Post(postID: snap.key, postData: postDict)
+                        self.posts.append(post)
+                    }
+                }
+            }
+            self.tableView.reloadData()
+        })
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -27,16 +42,18 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return self.posts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell")
-        if let c = cell {
-            return c
+        let post = self.posts[indexPath.row]
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell") as? PostCell {
+            cell.configureCell(post: post)
+            return cell
+        } else {
+            print("Brennan - Didn't dequeue a reusable PostCell for some reason. Returning a generic PostCell.")
+            return PostCell()
         }
-        print("Didn't dequeue a PostCell table view cell for some reason")
-        return UITableViewCell()
     }
     
     
