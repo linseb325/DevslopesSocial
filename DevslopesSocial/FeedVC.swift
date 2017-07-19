@@ -10,14 +10,34 @@ import UIKit
 import Firebase
 import SwiftKeychainWrapper
 
-class FeedVC: UIViewController {
+class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         // Do any additional setup after loading the view.
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell")
+        if let c = cell {
+            return c
+        }
+        print("Didn't dequeue a PostCell table view cell for some reason")
+        return UITableViewCell()
+    }
     
     
     @IBAction func signOutPressed(_ sender: Any) {
@@ -28,8 +48,8 @@ class FeedVC: UIViewController {
         
         do {
             try Auth.auth().signOut()
-        } catch let err {
-            print("Brennan - error signing out of Firebase: \(err.localizedDescription)")
+        } catch {
+            print("Brennan - error signing out of Firebase: \(error.localizedDescription)")
         }
         
         self.dismiss(animated: true, completion: nil)

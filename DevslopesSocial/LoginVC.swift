@@ -10,7 +10,6 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 import Firebase
-import FirebaseAuth
 import SwiftKeychainWrapper
 
 class LoginVC: UIViewController, UITextFieldDelegate {
@@ -61,9 +60,10 @@ class LoginVC: UIViewController, UITextFieldDelegate {
             if error != nil {
                 print("Brennan - ERROR: Unable to sign in with Firebase: \(error.debugDescription)")
             } else {
-                print("Brennan - Successfully signed in with Firebase in 'authenticateFirebase' method")
+                print("Brennan - Successfully signed in with Firebase (via Facebook) in 'authenticateFirebase' method")
                 if let user = user {
-                    self.completeSignIn(id: user.uid)
+                    let userData = ["provider": credential.provider]
+                    self.completeSignIn(id: user.uid, userData: userData)
                 }
             }
         }
@@ -76,7 +76,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                 if error == nil {
                     print("Brennan - Existing email user signed in with Firebase")
                     if let user = user {
-                        self.completeSignIn(id: user.uid)
+                        let userData = ["provider": user.providerID, "username": emailAddress]
+                        self.completeSignIn(id: user.uid, userData: userData)
                     }
                 } else {
                     // Try to create a new user
@@ -86,7 +87,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                         } else {
                             print("Brennan - Successfully created new user with Firebase")
                             if let user = user {
-                                self.completeSignIn(id: user.uid)
+                                let userData = ["provider": user.providerID, "username": emailAddress]
+                                self.completeSignIn(id: user.uid, userData: userData)
                             }
                         }
                     })
@@ -95,7 +97,8 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func completeSignIn(id: String) {
+    func completeSignIn(id: String, userData: [String: String]) {
+        DataService.ds.createFirebaseDBUser(uid: id, userData: userData)
         let saveSuccessful = KeychainWrapper.standard.set(id, forKey: KEY_UID)
         print("Brennan - Was the UID save to keychain successful? -> \(saveSuccessful)")
         if saveSuccessful {
