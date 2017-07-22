@@ -144,10 +144,10 @@
 		C841811E1F0055C400ADF526 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C84181111EFC577D00ADF526 /* Info.plist */,
 				C84181051EFC577D00ADF526 /* AppDelegate.swift */,
 				C841810C1EFC577D00ADF526 /* Assets.xcassets */,
 				C841810E1EFC577D00ADF526 /* LaunchScreen.storyboard */,
-				C84181111EFC577D00ADF526 /* Info.plist */,
 				C84181171EFC580E00ADF526 /* GoogleService-Info.plist */,
 			);
 			name = "Supporting Files";

@@ -177,13 +177,17 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="CJi-h5-JX0">
                                         <rect key="frame" x="8" y="8" width="327" height="49"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add-image" translatesAutoresizingMaskIntoConstraints="NO" id="jMx-pT-tTC" customClass="RoundImageView" customModule="DevslopesSocial" customModuleProvider="target">
+                                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add-image" translatesAutoresizingMaskIntoConstraints="NO" id="jMx-pT-tTC" customClass="RoundImageView" customModule="DevslopesSocial" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="49" height="49"/>
                                                 <color key="backgroundColor" red="0.0" green="0.58823529409999997" blue="0.53333333329999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="49" id="CyA-EP-fGp"/>
                                                     <constraint firstAttribute="width" constant="49" id="aHA-Uu-Vy4"/>
                                                 </constraints>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="4nI-0H-5Xl" appends="YES" id="3a7-X4-eus"/>
+                                                </connections>
                                             </imageView>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add a caption..." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="V6r-Oh-3bS" customClass="FancyTextField" customModule="DevslopesSocial" customModuleProvider="target">
                                                 <rect key="frame" x="59" y="0.0" width="209" height="49"/>
@@ -200,6 +204,9 @@
                                                     <constraint firstAttribute="height" constant="49" id="xGw-C4-RDX"/>
                                                 </constraints>
                                                 <state key="normal" image="add-post"/>
+                                                <connections>
+                                                    <action selector="postButtonPressed:" destination="ey6-ID-ZnZ" eventType="touchUpInside" id="ovs-bi-HSM"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -336,10 +343,17 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="captionTextField" destination="V6r-Oh-3bS" id="Lje-X3-Ure"/>
+                        <outlet property="imageAddImageView" destination="jMx-pT-tTC" id="Oo1-s0-90L"/>
                         <outlet property="tableView" destination="O0V-wA-39F" id="2ec-NY-c6X"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ydQ-bk-y0U" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="4nI-0H-5Xl" userLabel="Add Image Gesture Recognizer">
+                    <connections>
+                        <action selector="addImageTapped:" destination="ey6-ID-ZnZ" id="oL8-LC-a5P"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="799.20000000000005" y="-114.69265367316342"/>
         </scene>
