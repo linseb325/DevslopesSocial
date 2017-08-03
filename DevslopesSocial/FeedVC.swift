@@ -10,16 +10,19 @@ import UIKit
 import Firebase
 import SwiftKeychainWrapper
 
-class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var imageAddImageView: RoundImageView!
     @IBOutlet weak var captionTextField: FancyTextField!
+    
     
     var posts = [Post]()
     var imagePickerController: UIImagePickerController!
     static var imageCache: NSCache<NSString, UIImage> = NSCache()
     var needsToAddImage = true
+    
     
     
     override func viewDidLoad() {
@@ -33,10 +36,11 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         self.imagePickerController.delegate = self
         
         DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
+            print("Brennan - Observer at posts reference fired")
             if let snaps = snapshot.children.allObjects as? [DataSnapshot] {
                 self.posts.removeAll()
                 for snap in snaps {
-                    print("Brennan - SNAPSHOT from observer: \(snap)")
+                    // print("Brennan - SNAPSHOT from observer at posts reference: \(snap)")
                     if let postDict = snap.value as? Dictionary<String, Any> {
                         let post = Post(postID: snap.key, postData: postDict)
                         self.posts.append(post)
@@ -46,6 +50,8 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             self.tableView.reloadData()
         })
     }
+    
+    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -63,7 +69,6 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell") as? PostCell {
             if let imageFromCache = FeedVC.imageCache.object(forKey: post.imageURL as NSString) {
-                print("Brennan - Found image in cache with URL: \(post.imageURL)")
                 cell.configureCell(post: post, image: imageFromCache)
             } else {
                 cell.configureCell(post: post)
@@ -76,11 +81,11 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     }
     
     
+    
     @IBAction func signOutPressed(_ sender: Any) {
-        print("Brennan - Got into signOutPressed")
         
         let didRemoveFromKeychain = KeychainWrapper.standard.removeObject(forKey: KEY_UID)
-        print("Brennan - Did remove UID from keychain? -> \(didRemoveFromKeychain)")
+        print("Brennan - In signOutPressed: Did remove UID from keychain? -> \(didRemoveFromKeychain)")
         
         do {
             try Auth.auth().signOut()
@@ -90,6 +95,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         
         self.dismiss(animated: true, completion: nil)
     }
+    
     
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -103,12 +109,15 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     }
     
     
+    
     @IBAction func addImageTapped(_ sender: Any) {
         self.present(imagePickerController, animated: true, completion: nil)
     }
     
     
+    
     @IBAction func postButtonPressed(_ sender: Any) {
+        
         guard let caption = self.captionTextField.text, !caption.isEmpty else {
             print("Brennan - Caption is empty!")
             return
@@ -128,7 +137,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                 } else {
                     print("Brennan - Successfully uploaded image to FB storage.")
                     if let downloadURL = metadata?.downloadURL()?.absoluteString {
-                        // Do something with the download URL.
+                        self.postToFirebase(imageURL: downloadURL, caption: caption)
                         print("Brennan - download URL is: \(downloadURL)")
                     } else {
                         print("Brennan - Couldn't get download URL from FB storage for some reason.")
@@ -136,12 +145,58 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                 }
             })
         }
-        
     }
     
     
     
+    func postToFirebase(imageURL: String, caption: String) {
+        
+        // Reset posting UI to prepare for the next post.
+        self.captionTextField.text = ""
+        self.imageAddImageView.image = UIImage(named: "add-image")
+        self.needsToAddImage = true
+
+        // Check to make sure we can get the current user's UID.
+        guard let currUID = Auth.auth().currentUser?.uid else {
+            print("Brennan - Unable to get the current user for some reason.")
+            return
+        }
+        
+        // Dictionary of post data to push to Firebase:
+        let postData: [String: Any] = [
+            "caption": caption,
+            "imageURL": imageURL,
+            "likes": 0,
+            "userID": currUID
+        ]
+        
+        // Push the post data to Firebase.
+        let newPostRef = DataService.ds.REF_POSTS.childByAutoId()
+        newPostRef.updateChildValues(postData) { (error, ref) in
+            if error != nil {
+                print("Brennan - Error updating child values for new post in postToFirebase method: \(error!.localizedDescription)")
+            } else {
+                // Child values successfully updated. Make the post show up in UI.
+                print("Brennan - Successfully uploaded post to Firebase.")
+                
+            }
+        }
+        
+        // Add the post ID to the user's collection of posts in Firebase.
+        let currUsersPostsRef = DataService.ds.REF_USERS.child("\(currUID)/posts")
+        currUsersPostsRef.updateChildValues([newPostRef.key: true])
+        
+        
+        
+        
+    }
     
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true
+    }
+
     
     
     

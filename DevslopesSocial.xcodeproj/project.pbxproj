@@ -106,7 +106,6 @@
 				C841811B1F00558200ADF526 /* View */,
 				C841811D1F00559D00ADF526 /* Controller */,
 				C841811E1F0055C400ADF526 /* Supporting Files */,
-				C841811F1F0055F900ADF526 /* Constants.swift */,
 			);
 			path = DevslopesSocial;
 			sourceTree = "<group>";
@@ -114,12 +113,12 @@
 		C841811B1F00558200ADF526 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C8D65C6B1F144D6D00008413 /* PostCell.swift */,
 				C84181191F00553200ADF526 /* FancyView.swift */,
 				C84181231F00587300ADF526 /* FancyTextField.swift */,
 				C84181211F00572800ADF526 /* RoundButton.swift */,
 				C84181251F0062D800ADF526 /* FancyButton.swift */,
 				C8B5CC851F0426930084554A /* RoundImageView.swift */,
-				C8D65C6B1F144D6D00008413 /* PostCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -157,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				C84E53CB1F1D17E800F3E953 /* DataService.swift */,
+				C841811F1F0055F900ADF526 /* Constants.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
