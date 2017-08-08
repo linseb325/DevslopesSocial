@@ -32,36 +32,70 @@ class PostCell: UITableViewCell {
     
     
     
-    func configureCell(post: Post, image: UIImage? = nil) {
+    func configureCell(post: Post, postImage: UIImage? = nil, profileImage: UIImage? = nil) {
         self.post = post
         self.captionTextView.text = post.caption
         self.numLikesLabel.text = "\(post.likes)"
+        self.usernameLabel.text = post.posterUsername
         
-        if let img = image {
-            self.postImageView.image = img
+        // Setting the post image
+        if let postImg = postImage {
+            self.postImageView.image = postImg
         } else {
             let ref = Storage.storage().reference(forURL: post.imageURL)
-            ref.getData(maxSize: 2 * 1024 * 1024, completion: { (data, error) in
-                if error != nil {
-                    print("Brennan - Unable to download image from Firebase storage: \(error!.localizedDescription)")
-                } else {
-                    if let imageData = data {
-                        if let img = UIImage(data: imageData) {
-                            self.postImageView.image = img
-                            FeedVC.imageCache.setObject(img, forKey: post.imageURL as NSString)
+            
+            DispatchQueue.global().async {
+                ref.getData(maxSize: 2 * 1024 * 1024, completion: { (data, error) in
+                    if error != nil {
+                        print("Brennan - Unable to download image from Firebase storage: \(error!.localizedDescription)")
+                    } else {
+                        if let imageData = data {
+                            if let img = UIImage(data: imageData) {
+                                DispatchQueue.global().sync {
+                                    self.postImageView.image = img
+                                }
+                                FeedVC.imageCache.setObject(img, forKey: post.imageURL as NSString)
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
+            
         }
         
+        // Setting the poster's profile image
+        if let profileImg = profileImage {
+            self.userImageView.image = profileImg
+        } else {
+            let ref = Storage.storage().reference(forURL: post.profileImageURL)
+            
+            DispatchQueue.global().async {
+                ref.getData(maxSize: 2 * 1024 * 1024, completion: { (data, error) in
+                    if error != nil {
+                        print("Brennan - Unable to download profile image from Firebase storage: \(String(describing: error?.localizedDescription))")
+                    } else {
+                        if let imageData = data {
+                            if let img = UIImage(data: imageData) {
+                                DispatchQueue.global().sync {
+                                    self.userImageView.image = img
+                                }
+                                FeedVC.imageCache.setObject(img, forKey: post.profileImageURL as NSString)
+                            }
+                        }
+                    }
+                })
+            }
+            
+        }
+        
+        // Setting the "likes" icon to either filled or unfilled.
         self.currUserLikesRef.child(post.postID).observeSingleEvent(of: .value, with: { (snapshot) in
+            // Check for NSNull because the key for this postID might not exist in the user's list of likes.
             if let _ = snapshot.value as? NSNull {
                 // The user hasn't liked this post.
                 self.likeImageView.image = UIImage(named: "empty-heart")
             } else {
                 // The user has liked this post.
-                print("Brennan - Current user likes this")
                 self.likeImageView.image = UIImage(named: "filled-heart")
             }
         })

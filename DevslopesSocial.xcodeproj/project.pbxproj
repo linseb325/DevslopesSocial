@@ -23,6 +23,7 @@
 		C88DED951F1FDFF500650779 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = C88DED941F1FDFF500650779 /* Post.swift */; };
 		C8B5CC841F029F240084554A /* FeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B5CC831F029F240084554A /* FeedVC.swift */; };
 		C8B5CC861F0426930084554A /* RoundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B5CC851F0426930084554A /* RoundImageView.swift */; };
+		C8CA55CC1F364F0A00E4E15A /* ProfileSetupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CA55CB1F364F0A00E4E15A /* ProfileSetupVC.swift */; };
 		C8D65C6C1F144D6D00008413 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8D65C6B1F144D6D00008413 /* PostCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,7 @@
 		C88DED941F1FDFF500650779 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		C8B5CC831F029F240084554A /* FeedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedVC.swift; sourceTree = "<group>"; };
 		C8B5CC851F0426930084554A /* RoundImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundImageView.swift; sourceTree = "<group>"; };
+		C8CA55CB1F364F0A00E4E15A /* ProfileSetupVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSetupVC.swift; sourceTree = "<group>"; };
 		C8D65C6B1F144D6D00008413 /* PostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		EECF75217C4CE44AF54691CD /* Pods_DevslopesSocial.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DevslopesSocial.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -135,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				C84181071EFC577D00ADF526 /* LoginVC.swift */,
+				C8CA55CB1F364F0A00E4E15A /* ProfileSetupVC.swift */,
 				C8B5CC831F029F240084554A /* FeedVC.swift */,
 			);
 			name = Controller;
@@ -295,6 +298,7 @@
 				C84E53CC1F1D17E800F3E953 /* DataService.swift in Sources */,
 				C8B5CC841F029F240084554A /* FeedVC.swift in Sources */,
 				C84181241F00587300ADF526 /* FancyTextField.swift in Sources */,
+				C8CA55CC1F364F0A00E4E15A /* ProfileSetupVC.swift in Sources */,
 				C841811A1F00553200ADF526 /* FancyView.swift in Sources */,
 				C84181201F0055F900ADF526 /* Constants.swift in Sources */,
 				C8D65C6C1F144D6D00008413 /* PostCell.swift in Sources */,

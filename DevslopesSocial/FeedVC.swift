@@ -35,19 +35,34 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         self.imagePickerController.allowsEditing = true
         self.imagePickerController.delegate = self
         
+        self.captionTextField.delegate = self
+        
+        // Update the table view (feed) whenever a change is made.
         DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
             print("Brennan - Observer at posts reference fired")
             if let snaps = snapshot.children.allObjects as? [DataSnapshot] {
                 self.posts.removeAll()
-                for snap in snaps {
-                    // print("Brennan - SNAPSHOT from observer at posts reference: \(snap)")
-                    if let postDict = snap.value as? Dictionary<String, Any> {
-                        let post = Post(postID: snap.key, postData: postDict)
-                        self.posts.append(post)
+                for snap in snaps.reversed() {
+                    if let postDict = snap.value as? [String: Any] {
+                        let posterUID = postDict["posterUID"]! as! String
+                        // Observer for retrieving poster's username and profile image URL.
+                        DataService.ds.REF_USERS.child(posterUID).observeSingleEvent(of: .value, with: { (snapshot) in
+                            if let posterDict = snapshot.value as? [String: Any] {
+                                if let posterUsername = posterDict["username"], let posterProfileImageURL = posterDict["profileImageURL"] {
+                                    if posterUsername is String && posterProfileImageURL is String {
+                                        let post = Post(postID: snap.key, postData: postDict, posterUsername: posterUsername as! String, posterProfileImageURL: posterProfileImageURL as! String)
+                                        self.posts.append(post)
+                                        if self.posts.count == snaps.count {
+                                            print("Brennan - Reloading table view data.")
+                                            self.tableView.reloadData()
+                                        }
+                                    }
+                                }
+                            }
+                        })
                     }
                 }
             }
-            self.tableView.reloadData()
         })
     }
     
@@ -64,14 +79,20 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let post = self.posts[indexPath.row]
+        var postImg: UIImage?; var profileImg: UIImage?
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell") as? PostCell {
-            if let imageFromCache = FeedVC.imageCache.object(forKey: post.imageURL as NSString) {
-                cell.configureCell(post: post, image: imageFromCache)
-            } else {
-                cell.configureCell(post: post)
+            DispatchQueue.global().sync {
+                if let postImageFromCache = FeedVC.imageCache.object(forKey: post.imageURL as NSString) {
+                    postImg = postImageFromCache
+                    print("Brennan - Got post image from cache.")
+                }
+                if let profileImageFromCache = FeedVC.imageCache.object(forKey: post.profileImageURL as NSString) {
+                    profileImg = profileImageFromCache
+                    print("Brennan - Got profile image from cache.")
+                }
+                cell.configureCell(post: post, postImage: postImg, profileImage: profileImg)
             }
             return cell
         } else {
@@ -83,7 +104,6 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     
     
     @IBAction func signOutPressed(_ sender: Any) {
-        
         let didRemoveFromKeychain = KeychainWrapper.standard.removeObject(forKey: KEY_UID)
         print("Brennan - In signOutPressed: Did remove UID from keychain? -> \(didRemoveFromKeychain)")
         
@@ -117,7 +137,6 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     
     
     @IBAction func postButtonPressed(_ sender: Any) {
-        
         guard let caption = self.captionTextField.text, !caption.isEmpty else {
             print("Brennan - Caption is empty!")
             return
@@ -155,10 +174,11 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         self.captionTextField.text = ""
         self.imageAddImageView.image = UIImage(named: "add-image")
         self.needsToAddImage = true
+        self.view.endEditing(true)
 
         // Check to make sure we can get the current user's UID.
         guard let currUID = Auth.auth().currentUser?.uid else {
-            print("Brennan - Unable to get the current user for some reason.")
+            print("Brennan - Unable to get the current user's UID for some reason.")
             return
         }
         
@@ -167,7 +187,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             "caption": caption,
             "imageURL": imageURL,
             "likes": 0,
-            "userID": currUID
+            "posterUID": currUID
         ]
         
         // Push the post data to Firebase.
@@ -185,10 +205,6 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         // Add the post ID to the user's collection of posts in Firebase.
         let currUsersPostsRef = DataService.ds.REF_USERS.child("\(currUID)/posts")
         currUsersPostsRef.updateChildValues([newPostRef.key: true])
-        
-        
-        
-        
     }
     
     

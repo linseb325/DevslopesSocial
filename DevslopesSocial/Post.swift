@@ -13,8 +13,10 @@ class Post {
     
     private var _caption: String!
     private var _imageURL: String!
+    private var _profileImageURL: String!
     private var _likes: Int!
-    private var _poster: String!
+    private var _posterUID: String!
+    private var _posterUsername: String!
     private var _postID: String!
     private var _ref: DatabaseReference!
     
@@ -27,12 +29,20 @@ class Post {
         return _imageURL
     }
     
+    var profileImageURL: String {
+        return _profileImageURL
+    }
+    
     var likes: Int {
         return _likes
     }
     
-    var poster: String {
-        return _poster
+    var posterUID: String {
+        return _posterUID
+    }
+    
+    var posterUsername: String {
+        return _posterUsername
     }
     
     var postID: String {
@@ -45,20 +55,24 @@ class Post {
     
     
     
-    init(caption: String, imageURL: String, likes: Int, postingUserID: String, postID: String) {
+    init(caption: String, imageURL: String, profileImageURL: String, likes: Int, postingUserID: String, postID: String) {
         self._caption = caption
         self._imageURL = imageURL
+        self._profileImageURL = profileImageURL
         self._likes = likes
-        self._poster = postingUserID
+        self._posterUID = postingUserID
+        // self._posterUsername = DataService.ds.REF_USERS.child(_posterUID).value(forKey: "username") as? String ?? "ds_user"
         self._postID = postID
         self._ref = DataService.ds.REF_POSTS.child(postID)
     }
     
     
     
-    init(postID: String, postData: Dictionary<String, Any>) {
+    init(postID: String, postData: [String: Any], posterUsername: String, posterProfileImageURL: String) {
         self._postID = postID
         self._ref = DataService.ds.REF_POSTS.child(postID)
+        self._posterUsername = posterUsername
+        self._profileImageURL = posterProfileImageURL
         
         if let caption = postData["caption"] as? String {
             self._caption = caption
@@ -69,9 +83,10 @@ class Post {
         if let likes = postData["likes"] as? Int {
             self._likes = likes
         }
-        if let postingUserID = postData["poster"] as? String {
-            self._poster = postingUserID
+        if let postingUserID = postData["posterUID"] as? String {
+            self._posterUID = postingUserID
         }
+        
     }
     
     
