@@ -86,7 +86,10 @@ class AccountSettingsVC: UIViewController, UIImagePickerControllerDelegate, UINa
                 if let userDict = snapshot.value as? [String: Any] {
                     if let oldProfileImageURL = userDict["profileImageURL"] as? String {
                         // Delete the old profile image from Firebase Storage.
-                        DataService.ds.REF_PROFILE_IMAGES.child(oldProfileImageURL).delete(completion: { (error) in
+                        var pathToOldImage = oldProfileImageURL.replacingOccurrences(of: "https://firebasestorage.googleapis.com/v0/b/devslopessocial-19da0.appspot.com/o/profile-pics%2F", with: "")
+                        let rangeStartIndex = pathToOldImage.range(of: "?alt=")?.lowerBound
+                        pathToOldImage.removeSubrange(rangeStartIndex!..<pathToOldImage.endIndex)
+                        DataService.ds.REF_PROFILE_IMAGES.child(pathToOldImage).delete(completion: { (error) in
                             if error != nil {
                                 print("Brennan - Error deleting old profile image from Storage: \(error!.localizedDescription)")
                             } else {
