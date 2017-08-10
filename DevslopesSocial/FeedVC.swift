@@ -48,14 +48,12 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                         // Observer for retrieving poster's username and profile image URL.
                         DataService.ds.REF_USERS.child(posterUID).observeSingleEvent(of: .value, with: { (snapshot) in
                             if let posterDict = snapshot.value as? [String: Any] {
-                                if let posterUsername = posterDict["username"], let posterProfileImageURL = posterDict["profileImageURL"] {
-                                    if posterUsername is String && posterProfileImageURL is String {
-                                        let post = Post(postID: snap.key, postData: postDict, posterUsername: posterUsername as! String, posterProfileImageURL: posterProfileImageURL as! String)
-                                        self.posts.append(post)
-                                        if self.posts.count == snaps.count {
-                                            print("Brennan - Reloading table view data.")
-                                            self.tableView.reloadData()
-                                        }
+                                if let posterUsername = posterDict["username"] as? String, let posterProfileImageURL = posterDict["profileImageURL"] as? String {
+                                    let post = Post(postID: snap.key, postData: postDict, posterUsername: posterUsername, posterProfileImageURL: posterProfileImageURL)
+                                    self.posts.append(post)
+                                    if self.posts.count == snaps.count {
+                                        print("Brennan - Reloading table view data.")
+                                        self.tableView.reloadData()
                                     }
                                 }
                             }
@@ -212,7 +210,52 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         self.view.endEditing(true)
         return true
     }
+    
+    
+    
+    // Updates the feed once.
+    func updateFeed() {
+        DataService.ds.REF_POSTS.observeSingleEvent(of: .value, with: { (snapshot) in
+            print("Brennan - Updating feed.")
+            if let snaps = snapshot.children.allObjects as? [DataSnapshot] {
+                self.posts.removeAll()
+                for snap in snaps.reversed() {
+                    if let postDict = snap.value as? [String: Any] {
+                        let posterUID = postDict["posterUID"]! as! String
+                        // Observer for retrieving poster's username and profile image URL.
+                        DataService.ds.REF_USERS.child(posterUID).observeSingleEvent(of: .value, with: { (snapshot) in
+                            if let posterDict = snapshot.value as? [String: Any] {
+                                if let posterUsername = posterDict["username"] as? String, let posterProfileImageURL = posterDict["profileImageURL"] as? String {
+                                    let post = Post(postID: snap.key, postData: postDict, posterUsername: posterUsername, posterProfileImageURL: posterProfileImageURL)
+                                    self.posts.append(post)
+                                    if self.posts.count == snaps.count {
+                                        print("Brennan - Reloading table view data.")
+                                        self.tableView.reloadData()
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        })
+    }
 
+    
+    
+    @IBAction func settingsButtonPressed(_ sender: Any) {
+        performSegue(withIdentifier: "toAccountSettingsVC", sender: self)
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toAccountSettingsVC", let settingsScreen = segue.destination as? AccountSettingsVC, let selfRef = sender as? FeedVC {
+            settingsScreen.feedScreenRef = selfRef
+        }
+    }
+    
+    
+    
     
     
     

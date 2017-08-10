@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9C0F19B46CD49334F4A5A195 /* Pods_DevslopesSocial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EECF75217C4CE44AF54691CD /* Pods_DevslopesSocial.framework */; };
+		C80332371F3CFCA5003EF42C /* AccountSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C80332361F3CFCA5003EF42C /* AccountSettingsVC.swift */; };
 		C84181061EFC577D00ADF526 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84181051EFC577D00ADF526 /* AppDelegate.swift */; };
 		C84181081EFC577D00ADF526 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84181071EFC577D00ADF526 /* LoginVC.swift */; };
 		C841810B1EFC577D00ADF526 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C84181091EFC577D00ADF526 /* Main.storyboard */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		975EBE02777673C655118430 /* Pods-DevslopesSocial.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevslopesSocial.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DevslopesSocial/Pods-DevslopesSocial.debug.xcconfig"; sourceTree = "<group>"; };
 		B2AF52A1EE929227976A67C7 /* Pods-DevslopesSocial.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DevslopesSocial.release.xcconfig"; path = "Pods/Target Support Files/Pods-DevslopesSocial/Pods-DevslopesSocial.release.xcconfig"; sourceTree = "<group>"; };
+		C80332361F3CFCA5003EF42C /* AccountSettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsVC.swift; sourceTree = "<group>"; };
 		C84181021EFC577D00ADF526 /* DevslopesSocial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DevslopesSocial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C84181051EFC577D00ADF526 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C84181071EFC577D00ADF526 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				C84181071EFC577D00ADF526 /* LoginVC.swift */,
 				C8CA55CB1F364F0A00E4E15A /* ProfileSetupVC.swift */,
 				C8B5CC831F029F240084554A /* FeedVC.swift */,
+				C80332361F3CFCA5003EF42C /* AccountSettingsVC.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				C84181241F00587300ADF526 /* FancyTextField.swift in Sources */,
 				C8CA55CC1F364F0A00E4E15A /* ProfileSetupVC.swift in Sources */,
 				C841811A1F00553200ADF526 /* FancyView.swift in Sources */,
+				C80332371F3CFCA5003EF42C /* AccountSettingsVC.swift in Sources */,
 				C84181201F0055F900ADF526 /* Constants.swift in Sources */,
 				C8D65C6C1F144D6D00008413 /* PostCell.swift in Sources */,
 			);
